@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## go项目开发
+
+### 技术栈
+1. 微服务框架: go-kratos
+2. json序列化/反序列化矿建: sonic
+
+
+## java项目开发
+### 技术栈

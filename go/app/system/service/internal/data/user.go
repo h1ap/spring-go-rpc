@@ -2,10 +2,10 @@ package data
 
 import (
 	"context"
-	"encoding/json"
 	"spring-go-rpc/app/system/service/conf"
 	"time"
 
+	"github.com/bytedance/sonic"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	mmd "github.com/go-kratos/kratos/v2/middleware/metadata"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -65,9 +65,9 @@ func (r *userRepo) GetAllUsers(ctx context.Context, req *v1.GetAllUsersReqVO) (*
 		r.log.WithContext(ctx).Errorf("调用Spring Boot服务失败: %v", err)
 		return nil, err
 	}
-	
+
 	var remoteUser v1.UserInfo
-	json.Unmarshal([]byte(value), &remoteUser)
+	sonic.Unmarshal([]byte(value), &remoteUser)
 	rsp.Data = append(rsp.Data, &remoteUser)
 
 	r.log.WithContext(ctx).Infof("成功获取用户列表，响应码: %d, 消息: %s, 用户数量: %d",
