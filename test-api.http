@@ -1,0 +1,51 @@
+### 测试重构后的用户API
+
+### 1. 健康检查
+GET http://localhost:8080/api/users/health
+Content-Type: application/json
+
+### 2. 获取所有用户
+GET http://localhost:8080/api/users
+Content-Type: application/json
+
+### 3. 根据ID获取用户
+GET http://localhost:8080/api/users/1
+Content-Type: application/json
+
+### 4. 创建用户（新的数据结构：包含username, email, age）
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "测试用户",
+  "email": "test@example.com",
+  "age": 25
+}
+
+### 5. 更新用户（新的数据结构）
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+
+{
+  "username": "更新的用户名",
+  "email": "updated@example.com",
+  "age": 30
+}
+
+### 6. 删除用户
+DELETE http://localhost:8080/api/users/1
+Content-Type: application/json
+
+### 7. 测试Go服务（如果运行在8081端口）
+GET http://localhost:8081/api/users
+Content-Type: application/json
+
+### 8. 通过Go服务创建用户
+POST http://localhost:8081/api/users
+Content-Type: application/json
+
+{
+  "username": "Go服务测试用户",
+  "email": "go-test@example.com",
+  "age": 28
+} 

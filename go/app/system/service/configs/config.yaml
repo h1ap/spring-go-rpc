@@ -1,0 +1,23 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout:
+      seconds: 1
+      nanos: 0
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout:
+      seconds: 1
+      nanos: 0
+  service_discovery:
+    server_addr: "127.0.0.1"  # nacos服务器地址
+    port: 8848
+    namespace: "public"       # nacos命名空间
+    group: "DEFAULT_GROUP"    # nacos分组
+  service_config:
+    server_addr: "127.0.0.1"  # nacos配置中心地址
+    port: 8848
+    namespace: "public"       # nacos命名空间
+    group: "DEFAULT_GROUP"    # nacos分组
+    data_id: "spring-go-rpc.yaml"
+    file_extension: "yaml"    # 配置文件扩展名

@@ -1,0 +1,99 @@
+### Spring Cloud 微服务 API 测试文件
+### 使用方法：在IntelliJ IDEA或VS Code中打开此文件，点击请求旁边的"Run"按钮执行测试
+
+### 服务健康检查
+GET http://localhost:8080/api/users/health
+
+###
+
+### 获取所有用户
+GET http://localhost:8080/api/users
+
+###
+
+### 根据ID获取用户
+GET http://localhost:8080/api/users/1
+
+###
+
+### 创建用户
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "新用户",
+  "email": "newuser@example.com",
+  "age": 28
+}
+
+###
+
+### 更新用户
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+
+{
+  "username": "更新后的用户",
+  "email": "updated@example.com",
+  "age": 30
+}
+
+###
+
+### 删除用户
+DELETE http://localhost:8080/api/users/1
+
+###
+
+### =========================
+### OpenFeign 远程调用测试
+### =========================
+
+### 通过Feign获取所有用户
+GET http://localhost:8080/api/remote/users
+
+###
+
+### 通过Feign根据ID获取用户
+GET http://localhost:8080/api/remote/users/1
+
+###
+
+### 通过Feign创建用户
+POST http://localhost:8080/api/remote/users
+Content-Type: application/json
+
+{
+  "username": "Feign创建的用户",
+  "email": "feign@example.com",
+  "age": 26
+}
+
+###
+
+### 通过Feign更新用户
+PUT http://localhost:8080/api/remote/users/2
+Content-Type: application/json
+
+{
+  "username": "Feign更新的用户",
+  "email": "feign-updated@example.com",
+  "age": 32
+}
+
+###
+
+### 通过Feign删除用户
+DELETE http://localhost:8080/api/remote/users/2
+
+###
+
+### 通过Feign检查服务健康状态
+GET http://localhost:8080/api/remote/users/health
+
+###
+
+### 综合测试远程调用
+GET http://localhost:8080/api/remote/test
+
+### 

@@ -1,0 +1,42 @@
+# 应用基本配置
+spring:
+  application:
+    name: spring-go-rpc-spring
+  # Spring Cloud Config导入配置（2020.0版本后必需）
+  config:
+    import: optional:nacos:spring-go-rpc.yaml
+  # Nacos服务注册与发现配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+      # Nacos配置中心（可选）
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yaml
+    # 启用服务发现
+    discovery:
+      enabled: true
+
+server:
+  port: 8080
+
+# Feign配置
+feign:
+  hystrix:
+    enabled: false
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+
+# 日志配置
+logging:
+  level:
+    tech.cooplink.springgorpc.feign: DEBUG
+    root: INFO 

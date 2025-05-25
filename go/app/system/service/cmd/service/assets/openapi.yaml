@@ -1,0 +1,249 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: UserService API
+    description: 用户服务
+    version: 0.0.1
+paths:
+    /api/users:
+        get:
+            tags:
+                - UserService
+            description: 获取所有用户
+            operationId: UserService_GetAllUsers
+            parameters:
+                - name: page
+                  in: query
+                  description: 可选的分页参数
+                  schema:
+                    type: integer
+                    format: int32
+                - name: size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetAllUsersRespVO'
+        post:
+            tags:
+                - UserService
+            description: 创建用户
+            operationId: UserService_CreateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUserReqVO'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateUserRespVO'
+    /api/users/health:
+        get:
+            tags:
+                - UserService
+            description: 健康检查
+            operationId: UserService_HealthCheck
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HealthCheckRespVO'
+    /api/users/{id}:
+        get:
+            tags:
+                - UserService
+            description: 根据ID获取用户
+            operationId: UserService_GetUserById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserByIdRespVO'
+        put:
+            tags:
+                - UserService
+            description: 更新用户
+            operationId: UserService_UpdateUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateUserReqVO'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateUserRespVO'
+        delete:
+            tags:
+                - UserService
+            description: 删除用户
+            operationId: UserService_DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteUserRespVO'
+components:
+    schemas:
+        CreateUserReqVO:
+            type: object
+            properties:
+                username:
+                    type: string
+                    description: 用户名，4-32位字母数字下划线
+                email:
+                    type: string
+                    description: 邮箱地址
+                phone:
+                    type: string
+                    description: 手机号
+                nickname:
+                    type: string
+                    description: 昵称，最大50字符
+                password:
+                    type: string
+                    description: 密码，6-32位
+            description: 创建用户请求
+        CreateUserRespVO:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/UserInfo'
+            description: 创建用户响应
+        DeleteUserRespVO:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    description: 删除是否成功
+                message:
+                    type: string
+                    description: 操作消息
+            description: 删除用户响应
+        GetAllUsersRespVO:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UserInfo'
+                    description: 用户列表
+                total:
+                    type: integer
+                    description: 总数量
+                    format: int32
+            description: 获取所有用户响应
+        GetUserByIdRespVO:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/UserInfo'
+            description: 根据ID获取用户响应
+        HealthCheckRespVO:
+            type: object
+            properties:
+                status:
+                    type: string
+                    description: 服务状态
+                message:
+                    type: string
+                    description: 状态消息
+            description: 健康检查响应
+        UpdateUserReqVO:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: 用户ID
+                email:
+                    type: string
+                    description: 邮箱地址
+                phone:
+                    type: string
+                    description: 手机号
+                nickname:
+                    type: string
+                    description: 昵称
+                status:
+                    type: integer
+                    description: 状态：1-启用，0-禁用
+                    format: int32
+            description: 更新用户请求
+        UpdateUserRespVO:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/UserInfo'
+            description: 更新用户响应
+        UserInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: 用户ID
+                username:
+                    type: string
+                    description: 用户名
+                email:
+                    type: string
+                    description: 邮箱
+                phone:
+                    type: string
+                    description: 手机号
+                nickname:
+                    type: string
+                    description: 昵称
+                status:
+                    type: integer
+                    description: 状态：1-启用，0-禁用
+                    format: int32
+                created_time:
+                    type: string
+                    description: 创建时间
+                updated_time:
+                    type: string
+                    description: 更新时间
+            description: 用户信息
+tags:
+    - name: UserService

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package system.service.configs;
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message ServiceDiscovery {
+    string server_addr = 1;
+    uint64 port = 2;
+    string namespace = 3;
+    string group = 4;
+  }
+  message ServiceConfig {
+    string server_addr = 1;
+    uint64 port = 2;
+    string namespace = 3;
+    string group = 4;
+    string data_id = 5;
+    string file_extension = 6;
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+  ServiceDiscovery service_discovery = 3;
+  ServiceConfig service_config = 4;
+}

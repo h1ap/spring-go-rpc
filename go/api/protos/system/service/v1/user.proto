@@ -1,0 +1,325 @@
+syntax = "proto3";
+
+package system.service.v1;
+
+import "gnostic/openapi/v3/annotations.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+// 用户服务
+service UserService {
+  // 获取所有用户
+  rpc GetAllUsers(GetAllUsersReqVO) returns (GetAllUsersRespVO) {
+    option (google.api.http) = {
+      get: "/api/users"
+    };
+  }
+  
+  // 根据ID获取用户
+  rpc GetUserById(GetUserByIdReqVO) returns (GetUserByIdRespVO) {
+    option (google.api.http) = {
+      get: "/api/users/{id}"
+    };
+  }
+  
+  // 创建用户
+  rpc CreateUser(CreateUserReqVO) returns (CreateUserRespVO) {
+    option (google.api.http) = {
+      post: "/api/users"
+      body: "*"
+    };
+  }
+  
+  // 更新用户
+  rpc UpdateUser(UpdateUserReqVO) returns (UpdateUserRespVO) {
+    option (google.api.http) = {
+      put: "/api/users/{id}"
+      body: "*"
+    };
+  }
+  
+  // 删除用户
+  rpc DeleteUser(DeleteUserReqVO) returns (DeleteUserRespVO) {
+    option (google.api.http) = {
+      delete: "/api/users/{id}"
+    };
+  }
+  
+  // 健康检查
+  rpc HealthCheck(HealthCheckReqVO) returns (HealthCheckRespVO) {
+    option (google.api.http) = {
+      get: "/api/users/health"
+    };
+  }
+}
+
+// 通用API响应包装 - 与Java ApiResponse一致
+message ApiResponse {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  // data字段在具体的响应消息中定义
+}
+
+// 用户信息 - 与Java UserDTO保持一致
+message UserInfo {
+  int64 id = 1 [
+    json_name = "id",
+    (gnostic.openapi.v3.property) = {
+      description: "用户ID"
+    }
+  ];
+  string username = 2 [
+    json_name = "username",
+    (gnostic.openapi.v3.property) = {
+      description: "用户名"
+    }
+  ];
+  string email = 3 [
+    json_name = "email",
+    (gnostic.openapi.v3.property) = {
+      description: "邮箱"
+    }
+  ];
+  int32 age = 4 [
+    json_name = "age",
+    (gnostic.openapi.v3.property) = {
+      description: "年龄"
+    }
+  ];
+}
+
+// 获取所有用户请求
+message GetAllUsersReqVO {
+  // 空请求，与Java接口保持一致
+}
+
+// 获取所有用户响应 - 包装在ApiResponse中
+message GetAllUsersRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  repeated UserInfo data = 3 [
+    json_name = "data",
+    (gnostic.openapi.v3.property) = {
+      description: "用户列表数据"
+    }
+  ];
+}
+
+// 根据ID获取用户请求
+message GetUserByIdReqVO {
+  int64 id = 1 [
+    json_name = "id",
+    (validate.rules).int64 = {gt: 0},
+    (gnostic.openapi.v3.property) = {
+      description: "用户ID，必须大于0"
+    }
+  ];
+}
+
+// 根据ID获取用户响应 - 包装在ApiResponse中
+message GetUserByIdRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  UserInfo data = 3 [
+    json_name = "data",
+    (gnostic.openapi.v3.property) = {
+      description: "用户信息数据"
+    }
+  ];
+}
+
+// 创建用户请求
+message CreateUserReqVO {
+  string username = 1 [
+    json_name = "username",
+    (validate.rules).string = {
+      min_len: 1
+      max_len: 50
+    },
+    (gnostic.openapi.v3.property) = {
+      description: "用户名"
+    }
+  ];
+  string email = 2 [
+    json_name = "email",
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    },
+    (gnostic.openapi.v3.property) = {
+      description: "邮箱地址"
+    }
+  ];
+  optional int32 age = 3 [
+    json_name = "age",
+    (validate.rules).int32 = {gte: 0, lte: 150},
+    (gnostic.openapi.v3.property) = {
+      description: "年龄"
+    }
+  ];
+}
+
+// 创建用户响应 - 包装在ApiResponse中
+message CreateUserRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  UserInfo data = 3 [
+    json_name = "data",
+    (gnostic.openapi.v3.property) = {
+      description: "创建的用户信息数据"
+    }
+  ];
+}
+
+// 更新用户请求
+message UpdateUserReqVO {
+  int64 id = 1 [
+    json_name = "id",
+    (validate.rules).int64 = {gt: 0},
+    (gnostic.openapi.v3.property) = {
+      description: "用户ID"
+    }
+  ];
+  optional string username = 2 [
+    json_name = "username",
+    (validate.rules).string = {
+      min_len: 1
+      max_len: 50
+    },
+    (gnostic.openapi.v3.property) = {
+      description: "用户名"
+    }
+  ];
+  optional string email = 3 [
+    json_name = "email",
+    (validate.rules).string = {
+      pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    },
+    (gnostic.openapi.v3.property) = {
+      description: "邮箱地址"
+    }
+  ];
+  optional int32 age = 4 [
+    json_name = "age",
+    (validate.rules).int32 = {gte: 0, lte: 150},
+    (gnostic.openapi.v3.property) = {
+      description: "年龄"
+    }
+  ];
+}
+
+// 更新用户响应 - 包装在ApiResponse中
+message UpdateUserRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  UserInfo data = 3 [
+    json_name = "data",
+    (gnostic.openapi.v3.property) = {
+      description: "更新后的用户信息数据"
+    }
+  ];
+}
+
+// 删除用户请求
+message DeleteUserReqVO {
+  int64 id = 1 [
+    json_name = "id",
+    (validate.rules).int64 = {gt: 0},
+    (gnostic.openapi.v3.property) = {
+      description: "用户ID"
+    }
+  ];
+}
+
+// 删除用户响应 - 包装在ApiResponse中
+message DeleteUserRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  // 删除操作的data字段为null，所以不定义data字段
+}
+
+// 健康检查请求
+message HealthCheckReqVO {
+  // 空请求
+}
+
+// 健康检查响应 - 包装在ApiResponse中
+message HealthCheckRespVO {
+  int32 code = 1 [
+    json_name = "code",
+    (gnostic.openapi.v3.property) = {
+      description: "响应码"
+    }
+  ];
+  string message = 2 [
+    json_name = "message",
+    (gnostic.openapi.v3.property) = {
+      description: "响应消息"
+    }
+  ];
+  string data = 3 [
+    json_name = "data",
+    (gnostic.openapi.v3.property) = {
+      description: "健康状态数据"
+    }
+  ];
+}
